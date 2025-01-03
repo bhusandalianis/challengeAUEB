@@ -1,0 +1,218 @@
+package askhseis;
+
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+import java.lang.Math;
+
+import static java.lang.Math.random;
+
+public class bookingkom {
+
+    static int[][] viewTheater = new int[12][30];
+
+    public static void main(String[] args) throws IOException {
+        Scanner in      = new Scanner(System.in);
+        int epilogi;
+        int row;
+        int col;
+
+        viewTheater=fillTheater(viewTheater);
+        ektypwseOpsi(viewTheater);
+
+        System.out.println("Καλώς ήρθατε στο σύστημα");
+        System.out.println("Θέλετε να κλείσετε θέση; πατήστε το  1 μετά έντερ");
+        System.out.println("Θέλετε να ακυρώσετε θέση; πατήστε το 2 μετά έντερ");
+        epilogi = in.nextInt();
+
+
+        col = returnColumn();
+        row = returnRow();
+
+
+        if(epilogi ==1){
+            book(row, col);
+        }else if(epilogi ==2){
+            cancel(row, col);
+        }else{
+            System.err.println("λάθος επιλογή επανεκινήστε");
+        }
+
+        ektypwseOpsi(viewTheater);
+
+
+    }
+
+
+
+    public static void book(int col, int row)
+    {
+        Scanner in = new Scanner(System.in);
+//        row = returnRow();
+
+//        int colToInt = returnColumn();
+        if(elegxosPlhrothtas(row, col)==false) {
+            viewTheater[row][col] = 1;
+        }
+    }
+
+    public static boolean elegxosPlhrothtas(int row, int col){
+        boolean check=false;
+//        int colToInt = metatropiCol(col);
+        if(viewTheater[row][col] !=0){
+            System.err.println("Θέση πλήρης παρακαλώ δοκιμάστε ξανά");
+        }else {
+            System.out.println("Θέση κενή!");
+            viewTheater[row][col]=1;
+
+            System.out.println("Eκλεισε η θέση στης σειρά "+ row+ " και " + col + " στήλη στο βάθος.");
+            check = true;
+        }
+        return check;
+    }
+
+    public static int returnColumn() throws IOException {
+        char col= ' ';
+        int columnInt;
+        Scanner in = new Scanner(System.in);
+
+        System.out.println("Δώστε παρακαλώ την στήλη της θέση που θέλετε (από A έως L, κεφαλαία).");
+        col = (char) System.in.read();
+
+        columnInt = metatropiCol(col);
+        System.out.println("δώσατε την στήλη " + columnInt +" σε αριθμό.");
+
+        return columnInt;
+    }
+    public static int metatropiCol(char col) {
+        int x=0;
+
+        switch (col) {
+            case 'A':
+                x= 0;
+                break;
+            case 'B':
+                x= 1;
+                break;
+            case 'C':
+                x= 2;
+                break;
+            case 'D':
+                x= 3;
+                break;
+            case 'E':
+                x= 4;
+                break;
+            case 'F':
+                x= 5;
+                break;
+            case 'G':
+                x= 6;
+                break;
+            case 'H':
+                x= 7;
+                break;
+            case 'I':
+                x= 8;
+                break;
+            case 'J':
+                x= 9;
+                break;
+            case 'K':
+                x= 10;
+                break;
+            case 'L':
+                x= 11;
+                break;
+        }
+        return x;
+    }
+
+    public static int returnRow() {
+        //δήλωση μεταβλητων
+        int row;
+        Scanner in = new Scanner(System.in);
+
+        //εκτύπωση μηνύματος εισαγωγής από τον χ´ρηστη , διάβασμα από την μηχανή την εισαγωγή
+        System.out.println("Δώστε παρακαλώ την γραμμής της θέση που θέλετε (από 1 έως 30).");
+        row = in.nextInt();
+        System.out.println("δώσατε τη " + row + "η στήλη.");
+
+        return row-1;
+
+    }
+
+    public static int[][] fillTheater(int[][] arr){
+
+        for(int i=0;i<12; i++){
+            for(int j=0; j<30; j++){
+                arr[i][j]= (randomBit());
+            }
+        }
+        return arr;
+    }
+    public static int randomBit(){
+        double r = Math.random();
+        return r >= 0.55? 1 : 0;
+    }
+
+    public Character metatropi(int col){
+        char charCol;
+
+        switch("col"){
+            case "1":
+                return 'A';
+            case "2":
+                return 'B';
+            case "3":
+                return 'C';
+            case "4":
+                return 'D';
+            case "5":
+                return 'E';
+            case "6":
+                return 'F';
+            case "7":
+                return 'G';
+            case "8":
+                return 'H';
+            case "9":
+                return 'I';
+            case ("10"):
+                return 'J';
+            case "11":
+                return 'K';
+            case "12":
+                return 'L';
+        }
+        return 'A';
+    }
+
+
+
+    public static void cancel(int column, int row) {
+//        int colToInt = metatropiCol(column);
+
+        if(elegxosPlhrothtas(row, column)==false){
+//            viewTheater[row][column]=0;
+            System.err.println("H θέση είναι γεμάτη. Παρακαλώ δηλώστε άλλη θέση.");
+            
+        }else{
+            viewTheater[row][column]=0;
+            System.out.println("H θέση ακυρώθηκε");
+        }
+
+
+    }
+
+    public static void ektypwseOpsi(int[][] arr){
+
+        for(int i=0;i<12; i++){
+            for(int j=0; j<30; j++){
+                System.out.print(arr[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+}
