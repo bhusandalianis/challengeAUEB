@@ -1,0 +1,176 @@
+//triliza me kukliko tablo
+package askhseis;
+
+import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class trilizaBackUp{
+
+
+    public static void main(String[] args) throws InputMismatchException, IOException {
+        String onoma1, onoma2;
+        int thesi, player;
+        Scanner in = new Scanner(System.in);
+        boolean haveWin=false;
+
+
+        String[] arr = new String[9];  //οι συνθήκες είναι κυκλικές
+
+        arr = arrFill(arr);
+
+
+        System.out.println("Δώσε το όνομά σου");
+        onoma1 = in.nextLine();
+        System.out.println("Δώσε το όνομά του αντιπάλου σου.");
+        onoma2 = in.nextLine();
+
+
+        ektypwseTablo(arr);
+        while(!arrFull(arr) || !trilizaWin(arr)) {
+            System.out.println("Παίζει ο παίκτης " + onoma1 + ". To συμβολό σου είναι το σύμβολο Χ.");
+            player =1;
+            System.out.println("δώσε την γραμμή");
+            thesi = in.nextInt();
+            thesi = elegxosTimis(thesi);
+
+            arr=elegxosPlhrothtas(arr,thesi);
+
+            arr[thesi] = String.valueOf('X');
+            ektypwseTablo(arr);
+            haveWin = trilizaWin(arr);
+
+            if(haveWin){
+                System.out.println("Κέρδισες " + onoma1 + "! είσαι ο καλύτερος!!!");
+                break;
+            }
+
+            System.out.println("Παίζει ο παίκτης " + onoma2 + ". To συμβολό σου είναι ο κύκλος (Ο).");
+            player =2;
+            System.out.println("δώσε την θέση");
+            thesi = in.nextInt();
+            thesi = elegxosTimis(thesi);
+
+
+            arr=elegxosPlhrothtas(arr,thesi);
+
+            arr[thesi] = String.valueOf('O');
+            ektypwseTablo(arr);
+            haveWin = trilizaWin(arr);
+            if(haveWin){
+                if(haveWin) System.out.println("Κέρδισες  " + onoma2 + "! Συγχαρητήρια!!!");
+                break;
+            }
+
+        }
+    }
+
+    public static String[] arrFill(String[] arr){
+        for(int i=0; i<=8;i++) {
+                arr[i] =String.valueOf(i);
+        }
+        return arr;
+    }
+
+    public static String[] elegxosPlhrothtas(String[] arr, int thesi){
+        Scanner in = new Scanner(System.in);
+        if(arr[thesi].equals("X")||arr[thesi].equals("O"))
+        {
+            int thes=thesi;
+
+            while(!elegxosOriwn(thes)){
+                System.out.println("Θέση πλήρης. Δώσε νέα θέση");
+                thes = in.nextInt();
+            }
+        }
+        return arr;
+    }
+
+    public static boolean arrFull(String[] arr){
+        boolean full=false;
+        int count=0;
+        for(int i=0; i<=8;i++) {
+            if (arr[i].equals("X") || arr[i].equals("O")) count++;
+        }
+        if(count==9){
+            full=true;
+        }
+        return full;
+    }
+
+
+    //lathos synthikes!!!!!!!!!!!!!!!!!!
+    public static boolean trilizaWin(String[] arr) {
+        boolean win = false;
+        boolean isopalia=arrFull(arr);
+
+        if(isopalia){
+            System.out.println("It is a tie my dears");
+        }
+        //elegxos grammis
+        for (int i = 0; i <= arr.length-1; i +=3) {
+                if (arr[i].equals(arr[i+1]) && (arr[i].equals(arr[i+2])))
+                    win = true;
+        }
+
+
+        //elegxos stilis
+        for(int i=0; i<=2;i++) {
+                if ( arr[i].equals(arr[i+3]) &&  arr[i].equals(arr[i+6]))
+                    win = true;
+        }
+
+        //elegxos diagwniou
+        if ((arr[0].equals(arr[4]) && arr[0].equals(arr[8]))
+            ||(arr[2].equals(arr[4]) && arr[2].equals(arr[6])))
+        {
+            win = true;
+        }
+        return win;
+    }
+
+
+
+    public static void ektypwseTablo(String[] arr){
+        System.out.println(arr[0] + " " + arr[1] + " " + arr[2]);
+        System.out.println(arr[3] + " " + arr[4] + " " + arr[5]);
+        System.out.println(arr[6] + " " + arr[7] + " " + arr[8]);
+        System.out.println();
+    }
+
+
+
+
+    public static int dwseThesi(){
+        Scanner in = new Scanner(System.in);
+        int col;
+
+        System.out.println("δώσε την θέση ");
+        col = in.nextInt();
+        return col;
+    }
+
+    public static int elegxosTimis(int a) {
+        if (a >= 0 && a <= 8) {
+            System.out.println("Σωστές θέσεις.");
+        }else{
+            System.out.println("Λάθος τιμή από μηδέν μέχρι εννέα. Δοκίμασε ξανά");
+            a=dwseThesi();
+            elegxosTimis(a);
+        }
+        return a;
+    }
+
+    public static boolean elegxosOriwn(int a){
+        boolean check=false;
+        if(a<0 || a>9){
+            System.out.println("Μπορείς να δώσει τιμές από μηδέν μέχρι 8. Δοκίμασε ξανά");
+            a= dwseThesi();
+            System.out.println();
+        }
+
+        check=true;
+        return check;
+    }
+}
+
